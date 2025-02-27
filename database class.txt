@@ -1,0 +1,12 @@
+Design sales list page
+
+Normalization:
+Dividing a large table into several small table(reduce redundancy, memory efficient, require more time to query if database is very large)
+
+De-normalization:
+Combining small tables into a single large table(redundant data, optimizes query time)
+
+Table design:
+Candidate key must be placed at beginning of the table.(optimize query time)
+Meet with client and understand which columns is frequently accessed, consider them to make candidate key.
+
