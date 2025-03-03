@@ -9,12 +9,6 @@
   <title>Sales List</title>
   
   <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-      background-color: #f2f2f2; /* Light gray background */
-    }
 
     .page-container {
       width: 80%;
@@ -38,39 +32,6 @@
       text-align:left;
     }
 
-    /* Table styling */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-    }
-
-    thead tr {
-      background-color: #94c1e0; /* Header row color */
-      color: #fff;              /* Header text color */
-    }
-
-    th, td {
-      border: 1px solid #ccc;
-      padding: 8px 12px;
-      text-align: left;
-    }
-
-    /* Highlight first column */
-    td:first-child {
-    }
-
-    /* Alternate row color */
-    tbody tr:nth-child(even) {
-      background-color:rgb(230, 236, 237);
-    }
-
-    /* Hover effect */
-    tbody tr:hover {
-      background-color: #FFFFED;
-    }
-
-    
 
   </style>
 </head>

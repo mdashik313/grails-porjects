@@ -15,5 +15,5 @@
                 
                     <li><a href="/pos/sales/new_retail_sale" class="create"><i class="fas fa-database"></i> New Hire Sale</a></li>
                 
-            </ul>
-    </div>
+        </ul>
+</div>

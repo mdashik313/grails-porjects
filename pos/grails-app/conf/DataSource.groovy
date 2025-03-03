@@ -28,7 +28,7 @@ environments {
     production {
         dataSource {
             dbCreate = "update"
-            url = "jdbc:mysql://localhost:3306/posdb"
+            // url = "jdbc:mysql://localhost:3306/posdb"
             pooled = true
             properties {
                maxActive = -1

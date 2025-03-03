@@ -19,17 +19,9 @@ class Sales {
     String customer_address
     
     
-
+    
 
     static constraints = {
-        // customer_name nullable : true
-        // sale_type nullable : true
-        // price_type nullable : true
-        // grand_total nullable : true
-        // cash_received nullable : true
-        // collection_amt nullable : true
-        // sales_date nullable : true
-        
-        
+        customer_mobile_no size: 11..11
     }
 }

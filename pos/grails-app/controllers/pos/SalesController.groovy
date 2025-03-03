@@ -8,6 +8,10 @@ class SalesController {
         [sales:sales]
     }
 
+    def home() {
+        
+    }
+
     def new_retail_sale() {
         
     }
