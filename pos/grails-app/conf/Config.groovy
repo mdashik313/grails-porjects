@@ -94,3 +94,10 @@ grails.gorm.default.constraints = {
     // myNullable(nullable: true)
     // '*'(nullable: true)
 }
+
+minio {
+    endpoint = "https://minio-console.waltonbd.com"
+    accessKey = "CGyHtgbdEzXYDAr3aIN1"
+    secretKey = "qGBqkTDjV1rrUAF5YoFfIb9oN4XsBP4qpYyyw43k"
+    bucketName = "wc-pos"
+}

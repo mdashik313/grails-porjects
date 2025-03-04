@@ -22,14 +22,14 @@ grails.project.dependency.resolution = {
     legacyResolve false // whether to do a secondary resolve on plugin installation, not advised and here for backwards compatibility
 
     repositories {
-        inherits true // Whether to inherit repository definitions from plugins
+       // inherits true // Whether to inherit repository definitions from plugins
 
-        grailsPlugins()
-        grailsHome()
-        grailsCentral()
+        // grailsPlugins()
+        // grailsHome()
+        // grailsCentral()
 
-        mavenLocal()
-        mavenCentral()
+        // mavenLocal()
+        // mavenCentral()
 
         // uncomment these (or add new ones) to enable remote dependency resolution from public Maven repositories
         //mavenRepo "http://snapshots.repository.codehaus.org"
@@ -41,7 +41,11 @@ grails.project.dependency.resolution = {
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes e.g.
 
-        // compile 'mysql:mysql-connector-java:5.1.49'
+        compile 'mysql:mysql-connector-java:5.1.49'
+        compile 'io.minio:minio:7.1.0'
+
+        // AWS SDK for S3/Minio operations
+        compile 'com.amazonaws:aws-java-sdk-s3:1.11.722'
     }
 
     plugins {

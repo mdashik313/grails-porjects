@@ -6,5 +6,6 @@ class Employee {
     String document
     
     static constraints = {
+        document unique: true
     }
 }

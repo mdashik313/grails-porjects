@@ -61,6 +61,8 @@
             
             <input type="file" name="uploadedImage" /> <br>
             <input type="submit" />
+
+            <label> ${flash.message} </label>
         </g:uploadForm>
 
         <table>
