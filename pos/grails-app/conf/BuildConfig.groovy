@@ -42,10 +42,25 @@ grails.project.dependency.resolution = {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes e.g.
 
         compile 'mysql:mysql-connector-java:5.1.49'
-        compile 'io.minio:minio:7.1.0'
+        //compile 'io.minio:minio:2.0.1'
+        // compile 'io.minio:minio:7.1.0'
+        // compile 'com.squareup.okhttp3:okhttp:3.12.12'
+        // compile 'org.apache.httpcomponents:httpclient:4.5.13'
 
-        // AWS SDK for S3/Minio operations
-        compile 'com.amazonaws:aws-java-sdk-s3:1.11.722'
+        compile('net.java.dev.jets3t:jets3t:0.9.0') {
+            // Exclude conflicting dependencies
+            excludes 'commons-logging', 'commons-httpclient'
+        }
+
+         // Apache HttpClient
+        compile 'org.apache.httpcomponents:httpclient:4.3.6'
+        
+        // Additional supporting libraries
+        compile 'org.apache.httpcomponents:httpcore:4.3.3'
+        compile 'commons-logging:commons-logging:1.1.3'
+        compile 'com.jamesmurty.utils:java-xmlbuilder:1.1'
+
+        
     }
 
     plugins {

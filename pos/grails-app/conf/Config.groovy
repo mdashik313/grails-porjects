@@ -97,7 +97,9 @@ grails.gorm.default.constraints = {
 
 minio {
     endpoint = "https://minio-console.waltonbd.com"
-    accessKey = "CGyHtgbdEzXYDAr3aIN1"
-    secretKey = "qGBqkTDjV1rrUAF5YoFfIb9oN4XsBP4qpYyyw43k"
+    accessKey = "T0eNu377V0ZpgjwemFmK"
+    secretKey = "OkSoTcayuOrYYegJS5nAcqpBJBq9lfHN33GV5UQ1"
     bucketName = "wc-pos"
 }
+
+System.setProperty("https.protocols", "TLSv1.2")

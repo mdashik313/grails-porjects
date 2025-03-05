@@ -77,6 +77,9 @@
               <td> ${employee.name} </td>
               <td> ${employee.phone} </td>
               <td> <img src="${createLinkTo(dir: 'images/employee/', file: employee.document)}" /> </td>
+              <%-- <td> <img src="${createLinkTo(dir: minioUrl)}" /> </td> --%>
+              
+              
           </tr>
           </g:each>
 
