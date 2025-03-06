@@ -139,7 +139,7 @@ class EmployeeController {
             String bucketName = "wc-pos"
                         
             // Upload to Minio
-            String minioUrl = uploadToMinio(compressedImageBytes, uniqueFilename, bucketName, endpoint, accessKey, secretKey)
+            //String minioUrl = uploadToMinio(compressedImageBytes, uniqueFilename, bucketName, endpoint, accessKey, secretKey)
             // String minioUrl = uploadToMinio(
             //     compressedImageBytes,   // compressed image bytes
             //     uniqueFilename,         // unique filename
