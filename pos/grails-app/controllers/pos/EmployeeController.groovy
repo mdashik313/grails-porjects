@@ -12,29 +12,23 @@ import java.awt.image.*
 import javax.imageio.plugins.jpeg.*
 import java.util.UUID
 
-//package for minio
-import java.nio.charset.StandardCharsets
-import javax.net.ssl.HttpsURLConnection
-import java.net.URL
-import javax.imageio.ImageIO
-import java.awt.image.BufferedImage
-import java.io.ByteArrayOutputStream
+//
+import java.io.ByteArrayInputStream
 import java.io.InputStream
+import java.security.NoSuchAlgorithmException
+import java.security.InvalidKeyException
 
-//package for method signature
-import javax.crypto.Mac
-import javax.crypto.spec.SecretKeySpec
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.TimeZone
-import java.security.MessageDigest
+// MinIO dependencies (add to BuildConfig.groovy)
+import io.minio.MinioClient
+import io.minio.errors.MinioException
+import org.xmlpull.v1.XmlPullParserException
 
-// packages for jets3t
-import org.jets3t.service.S3Service
-import org.jets3t.service.impl.rest.httpclient.RestS3Service
-import org.jets3t.service.model.S3Bucket
-import org.jets3t.service.model.S3Object
-import org.jets3t.service.security.AWSCredentials
+import java.net.HttpURLConnection
+import java.net.URL
+import java.io.OutputStream
+import java.io.DataOutputStream
+import java.io.ByteArrayInputStream
+import org.apache.commons.codec.binary.Base64
 
 class EmployeeController {
 
@@ -47,48 +41,11 @@ class EmployeeController {
         //create a service for the file handling part
     }
 
-    
-
-    // def add_image_reduce_resolution() {
-    //     def uploadedFile = request.getFile('uploadedImage') // Get uploaded image file
-    //     if (!uploadedFile || uploadedFile.empty) {
-    //         flash.message = "Please upload a valid image file."
-    //         redirect(action: 'index')
-    //         return
-    //     }
-        
-    //     String originalFilename = uploadedFile.originalFilename
-    //     int targetWidth = 300  
-    //     int targetHeight = 300
-    //     // float quality = 0.6f   // Set compression quality (0.6 = 60%)
-
-    //     try {
-    //         BufferedImage originalImage = ImageIO.read(uploadedFile.inputStream)
-    //         BufferedImage resizedImage = resizeImage(originalImage, targetWidth, targetHeight)
-    //         ByteArrayOutputStream compressedImageStream = new ByteArrayOutputStream()
-
-    //         // Compress and write image
-    //         ImageIO.write(resizedImage, "jpg", compressedImageStream)
-
-    //         byte[] compressedImageBytes = compressedImageStream.toByteArray()
-    //         println "Original Size: ${uploadedFile.size / 1024} KB, Compressed Size: ${compressedImageBytes.length / 1024} KB"
-
-    //         // Save the compressed image (Modify as per your requirements)
-    //         File outputFile = new File("grails-app/assets/image/${originalFilename}")
-    //         outputFile.bytes = compressedImageBytes
-
-    //         flash.message = "Image uploaded and compressed successfully!"
-    //     } catch (Exception e) {
-    //         flash.message = "Error processing image: ${e.message}"
-    //     }
-
-    //     redirect(controller: 'sales', action: 'home')
-    // }
-
-    
 
     /// action: compress by resualation and size:
     def add_image_reduce_resolution_and_bytes() {
+
+        def uploadToMinio
 
         def uploadedFile = request.getFile('uploadedImage') // Get uploaded image file
 
@@ -129,28 +86,17 @@ class EmployeeController {
             println "Original Size: ${uploadedFile.size / 1024} KB, Compressed Size: ${compressedImageBytes.length / 1024} KB"
             
             //  Minio configuration
-            // String endpoint = "https://minio-console.waltonbd.com"
-            // String accessKey = "T0eNu377V0ZpgjwemFml"
-            // String secretKey = "OkSoTcayuOrYYegJS5nAcqpBJBq9lfHN33GV5UQ1"
 
-            String endpoint = "https://minio.waltonbd.com"
-            String accessKey = "GL3fVbqbvNz58U4oOtFE"
-            String secretKey = "ikyBaKyjV8bnOYuUkbN5NOzY0zLiFMgS3zMCy2hq"
-            String bucketName = "wc-pos"
+            String endpoint = ""
+            String accessKey = ""
+            String secretKey = ""
+            String bucketName = ""
                         
             // Upload to Minio
-            //String minioUrl = uploadToMinio(compressedImageBytes, uniqueFilename, bucketName, endpoint, accessKey, secretKey)
-            // String minioUrl = uploadToMinio(
-            //     compressedImageBytes,   // compressed image bytes
-            //     uniqueFilename,         // unique filename
-            //     bucketName,             // bucket name
-            //     endpoint,               // endpoint
-            //     accessKey,              // access key
-            //     secretKey               // secret key
-            // )
-            println minioUrl
+            // String minioUrl = uploadToMinioDirect(endpoint, accessKey, secretKey, bucketName, uniqueFilename, compressedImageBytes)
+            //uploadToMinio.uploadCompressedImageToMinio(compressedImageBytes, uniqueFilename)
             
-            // Save the compressed image to local server
+            // Save compressed image to local server
             File outputFile = new File("web-app/images/employee/${uniqueFilename}")
             outputFile.bytes = compressedImageBytes
             
@@ -182,189 +128,48 @@ class EmployeeController {
 
 
     // Upload to Minio
-    private String uploadToMinio(byte[] imageBytes, String filename, String bucketName, String endpoint, String accessKey, String secretKey) {
+    private String uploadToMinioDirect(String endpoint, String accessKey, String secretKey, String bucketName, String objectName, byte[] data) {
         try {
-            String urlString = "${endpoint}/${bucketName}/${filename}"
+            String urlString = "${endpoint}/${bucketName}/${objectName}"
             URL url = new URL(urlString)
-            HttpsURLConnection connection = (HttpsURLConnection) url.openConnection()
-            
-            // Set HTTP method to PUT (upload)
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection()
             connection.setRequestMethod("PUT")
+            connection.setRequestProperty("Authorization", getMinioAuthorization(accessKey, secretKey, "PUT", bucketName, objectName))
+            connection.setRequestProperty("Content-Type", "image/jpeg") // Adjust if needed
             connection.setDoOutput(true)
-            connection.setRequestProperty("Content-Type", "image/jpeg")
-            connection.setRequestProperty("Authorization", "AWS ${accessKey}:${getSignature(accessKey, secretKey)}")
 
-            // Write the image bytes to the request body
-            connection.getOutputStream().write(imageBytes)
-            println connection.getResponseMessage()
+            OutputStream outputStream = connection.getOutputStream()
+            outputStream.write(data)
+            outputStream.flush()
+            outputStream.close()
 
-            // Get the response code to check if the upload was successful
             int responseCode = connection.getResponseCode()
             if (responseCode == 200) {
-                return urlString  // Return the URL of the uploaded file
+                return urlString; // Or construct a proper URL if needed
             } else {
-                throw new RuntimeException("Error uploading to Minio. Response code: ${responseCode}")
+                println "MinIO upload failed with response code: ${responseCode}"
+                return null;
             }
         } catch (Exception e) {
-            throw new RuntimeException("Error uploading to Minio: " + e.message, e)
+            println "Error uploading to MinIO: ${e.message}"
+            return null;
         }
     }
 
-    //using aws:
-    //  private String uploadToMinio(
-    //     byte[] fileBytes, 
-    //     String filename, 
-    //     String bucketName, 
-    //     String endpoint, 
-    //     String accessKey, 
-    //     String secretKey
-    // ) {
-    //     try {
-    //         // Disable strict SSL validation (use with caution)
-    //         disableSSLValidation()
+    private String getMinioAuthorization(String accessKey, String secretKey, String method, String bucketName, String objectName) {
+        String date = new Date().format("EEE, dd MMM yyyy HH:mm:ss z", TimeZone.getTimeZone("GMT"))
+        String contentType = "image/jpeg" // Adjust as needed
+        String contentMd5 = new String(Base64.encodeBase64(java.security.MessageDigest.getInstance("MD5").digest(new ByteArrayInputStream(new byte[0]).bytes)));
+        String stringToSign = "${method}\n${contentMd5}\n${contentType}\n${date}\n/${bucketName}/${objectName}"
 
-    //         // Construct full URL
-    //         String fullUrl = "${endpoint}/${bucketName}/${filename}"
-            
-    //         // Create URL connection
-    //         URL url = new URL(fullUrl)
-    //         HttpsURLConnection connection = (HttpsURLConnection) url.openConnection()
-            
-    //         // Set up authentication
-    //         String authString = "${accessKey}:${secretKey}"
-    //         String encodedAuthString = Base64.getEncoder().encodeToString(authString.getBytes())
-            
-    //         // Configure connection
-    //         connection.setRequestMethod("PUT")
-    //         connection.setDoOutput(true)
-    //         connection.setRequestProperty("Content-Type", "image/jpeg")
-    //         connection.setRequestProperty("Authorization", "Basic ${encodedAuthString}")
-            
-    //         // Additional connection settings for robustness
-    //         connection.setConnectTimeout(10000)  // 10 seconds
-    //         connection.setReadTimeout(10000)     // 10 seconds
-    //         connection.setUseCaches(false)
-            
-    //         // Write file bytes
-    //         OutputStream outputStream = null
-    //         try {
-    //             outputStream = connection.getOutputStream()
-    //             outputStream.write(fileBytes)
-    //         } finally {
-    //             if (outputStream != null) {
-    //                 // outputStream.close()
-    //             }
-    //         }
-            
-    //         // Check response
-    //         int responseCode = connection.getResponseCode()
-    //         if (responseCode == 200 || responseCode == 204) {
-    //             return fullUrl
-    //         } else {
-    //             // Read error stream for more details
-    //             def errorStream = connection.getErrorStream()
-    //             String errorResponse = errorStream ? errorStream.text : "Unknown error"
-                
-    //             log.error("Minio upload failed. Response code: ${responseCode}, Error: ${errorResponse}")
-    //             throw new RuntimeException("Minio upload failed. Response code: ${responseCode}")
-    //         }
-    //     } catch (Exception e) {
-    //         log.error("Minio upload error: ${e.message}", e)
-    //         throw new RuntimeException("Failed to upload to Minio: ${e.message}", e)
-    //     }
-    // }
+        javax.crypto.Mac mac = javax.crypto.Mac.getInstance("HmacSHA1")
+        javax.crypto.spec.SecretKeySpec secretKeySpec = new javax.crypto.spec.SecretKeySpec(secretKey.getBytes(), "HmacSHA1")
+        mac.init(secretKeySpec)
+        String signature = new String(Base64.encodeBase64(mac.doFinal(stringToSign.getBytes())))
 
-    // /**
-    //  * Disable SSL certificate validation
-    //  * WARNING: This should only be used for testing and is not recommended for production
-    //  */
-    // private void disableSSLValidation() {
-    //     try {
-    //         // Create a trust manager that does not validate certificate chains
-    //         TrustManager[] trustAllCerts = [
-    //             new X509TrustManager() {
-    //                 public X509Certificate[] getAcceptedIssuers() { return null }
-    //                 public void checkClientTrusted(X509Certificate[] certs, String authType) {}
-    //                 public void checkServerTrusted(X509Certificate[] certs, String authType) {}
-    //             }
-    //         ] as TrustManager[]
-
-    //         // Install the all-trusting trust manager
-    //         SSLContext sc = SSLContext.getInstance("SSL")
-    //         sc.init(null, trustAllCerts, new java.security.SecureRandom())
-    //         HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory())
-
-    //         // Create all-trusting host name verifier
-    //         HttpsURLConnection.setDefaultHostnameVerifier { hostname, session -> true }
-    //     } catch (Exception e) {
-    //         log.error("Error disabling SSL validation: ${e.message}", e)
-    //     }
-    // }
-
-    // Helper method to generate AWS signature for Minio authentication
-    private String getSignature(String accessKey, String secretKey) {
-        try {
-            // Step 1: Prepare the request
-            String region = "bangladesh"  // Adjust region as needed
-            String service = "s3"
-            String method = "PUT"
-            String host = "minio-console.waltonbd.com"  // Minio server
-            String bucketName = "wc-pos"  // Your bucket name
-            String objectKey = UUID.randomUUID().toString() + ".jpg"  // Random filename for example
-
-            String requestDate = new SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'").format(new Date())
-            String amzDate = new SimpleDateFormat("yyyyMMdd").format(new Date()) // Date for signing
-
-            String canonicalUri = "/${bucketName}/${objectKey}"
-            String canonicalQueryString = ""
-            String canonicalHeaders = "host:${host}\nx-amz-date:${requestDate}\n"
-            String signedHeaders = "host;x-amz-date"
-
-            // Create the canonical request
-            String canonicalRequest = "${method}\n${canonicalUri}\n${canonicalQueryString}\n${canonicalHeaders}\n${signedHeaders}\nUNSIGNED-PAYLOAD"
-
-            // Step 2: Generate the string to sign
-            String credentialScope = "${amzDate}/${region}/${service}/aws4_request"
-            String stringToSign = "AWS4-HMAC-SHA256\n${requestDate}\n${credentialScope}\n${hash(canonicalRequest)}"
-
-            // Step 3: Compute the signature
-            byte[] signingKey = getSigningKey(secretKey, amzDate, region, service)
-            byte[] signatureBytes = hmacSHA256(stringToSign, signingKey)
-
-            // Step 4: Return the final signature
-            return "AWS4-HMAC-SHA256 Credential=${accessKey}/${credentialScope}, SignedHeaders=${signedHeaders}, Signature=${bytesToHex(signatureBytes)}"
-        } catch (Exception e) {
-            throw new RuntimeException("Error generating signature: " + e.message, e)
-        }
+        return "AWS ${accessKey}:${signature}"
     }
 
-    private byte[] hmacSHA256(String data, byte[] key) {
-        Mac mac = Mac.getInstance("HmacSHA256")
-        mac.init(new SecretKeySpec(key, "HmacSHA256"))
-        return mac.doFinal(data.getBytes(StandardCharsets.UTF_8))
-    }
-
-    private byte[] getSigningKey(String secretKey, String amzDate, String region, String service) {
-        byte[] kSecret = ("AWS4" + secretKey).getBytes(StandardCharsets.UTF_8)
-        byte[] kDate = hmacSHA256(amzDate, kSecret)
-        byte[] kRegion = hmacSHA256(region, kDate)
-        byte[] kService = hmacSHA256(service, kRegion)
-        return hmacSHA256("aws4_request", kService)
-    }
-
-    private String hash(String data) {
-        MessageDigest digest = MessageDigest.getInstance("SHA-256")
-        byte[] hashBytes = digest.digest(data.getBytes(StandardCharsets.UTF_8))
-        return bytesToHex(hashBytes)
-    }
-
-    private String bytesToHex(byte[] bytes) {
-        StringBuilder sb = new StringBuilder()
-        for (byte b : bytes) {
-            sb.append(String.format("%02x", b))
-        }
-        return sb.toString()
-    }
 
 
     // Resize image based on width & height
