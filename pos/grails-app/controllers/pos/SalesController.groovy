@@ -3,9 +3,15 @@ import java.text.SimpleDateFormat
 
 class SalesController {
 
-    def index() {
-        def sales = Sales.list()
+    static defaultAction = "list"
+
+    def list() {
+        def sales = Sales.getAll()
         [sales:sales]
+    }
+
+    def show() {
+
     }
 
     def home() {
@@ -42,7 +48,7 @@ class SalesController {
 
         if(sale.save(flush:true)){ }
             
-        redirect(action:"index")
+        redirect(action:"list")
     }
 
     def edit(Long id){
@@ -54,7 +60,7 @@ class SalesController {
     }
 
     def search_sale(){
-        def search_result = Sales.list()
+        def search_result = Sales.getAll()
 
         if(params.sale_no){
             search_result = search_result.findAll{ result ->

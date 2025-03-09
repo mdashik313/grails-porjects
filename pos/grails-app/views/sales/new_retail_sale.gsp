@@ -51,61 +51,132 @@
     <div class="header-title">Retail Sale</div>
     <g:render template="/layouts/sales_nav" />
 
-    <h3 style="background-color: #6097ab;
-      color: white;
-      padding: 6px 15px;
-      font-weight: normal;
-      margin: 0;
-      width: max-content;
-      font-size: 16px;"> Customer Information </h3> <br>
+    
 
-    <g:form controller="sales" action="save" method="POST" style="display: flex; flex-direction: column; gap: 5px;" >
-
-        <label for="mobile_no"> Mobile No: </label>
-        <input type="text" name="customer_mobile_no"  />
-        
-        <label> Employee ID:(if customer is walton employee) </label>
-        <input type="text" name="employee_id"  /> 
-
-        <label for=""> Customer Name: </label>
-        <input type="text" name="customer_name" />
-
-        <label for=""> Customer Address: </label>
-        <input type="text" name="customer_address"  /> 
-        
-        <label for=""> Customer National ID: </label>
-        <input type="text" name="customer_nid"  /> 
-        
-        <label for=""> Sale By: </label>
-        <input type="text" name="sale_by"  /> 
-        
-        <label for=""> Offer: </label>
-        <g:select name="offer" from="['Eid offer', 'New year offer']" noSelection="['':'Not applicable']"  /> <br>
-        
+    <g:form controller="sales" action="save" method="POST" style="display: flex; flex-direction: column;" >
         <h3 style="background-color: #6097ab;
             color: white;
             padding: 6px 15px;
             font-weight: normal;
             margin: 0;
             width: max-content;
-            font-size: 16px;"> Cash Calculation </h3> <br>
+            font-size: 16px;">
 
-        <label for=""> Total: </label>
-        <input type="number" name="total_ammount" required /> <br>
+            Customer Information 
+        </h3> 
 
-        <label for=""> Trade Discount: </label>
-        <input type="number" name="discount" value="0"  /> <br>
+        <table style="background: #eaf4ff; padding: 5px;">
+            <tr> 
+                <td> <label for="mobile_no"> Mobile No: </label> </td>
+                <td> <input type="text" name="customer_mobile_no"  /> </td>
+                <td> <label> Employee ID:(if customer is walton employee) </label> </td>
+                <td> <input type="text" name="employee_id"  />  </td> 
+            </tr>
 
-        <label for=""> Grand Total: </label>
-        <input type="number" name="grand_total" required  /> <br>
+            <tr> 
+                <td> <label for=""> Customer Name: </label>  </td>
+                <td> <input type="text" name="customer_name" /> </td>
+                <td> <label for=""> Customer Address: </label> </td>
+                <td> <input type="text" name="customer_address"  />  </td> 
+            </tr>
 
-        <label for=""> Cash Received: </label>
-        <input type="number" name="cash_received" required  /> <br>
+            <tr> 
+                <td> <label for=""> Customer National ID: </label> </td>
+                <td> <input type="text" name="customer_nid"  /> </td>
+                
+            </tr>
 
+            <tr>
+                <td> <label for=""> Sale By: </label> </td>
+                <td> <input type="text" name="sale_by"  />  </td> 
+                <td> <label for=""> Purchaser Bin:	 </label> </td>
+                <td> <input type="text" name="purchase_bin"  />  </td> 
+            </tr>
+
+            <tr>
+                <td> <label for=""> Offer: </label> </td>
+                <td> <g:select name="offer" from="['Eid offer']" noSelection="['':'Not applicable']"  /> <br> </td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td> <label for=""> Vendor: </label> </td>
+                <td> <g:select name="vendor" from="['']" noSelection="['':'Not applicable']"  /> <br> </td>
+                
+            </tr>
+        </table>
+
+        <table style="background: #eaf4ff; margin-top: 2px; padding: 5px;">
+            <tr>
+                <td> <label for=""> Student/Teacher	 </label> </td>
+                <td> <g:select name="vendor" from="['Student']" noSelection="['':'Non student']"  /> </td>
+            </tr>
+        </table> <br>
+
+        <table class="table-style">
+            <thead>
+                <tr>
+                    <th width="35" scope="col">Sl No.</th>
+                    <th scope="col">Product Description</th>
+                    <th scope="col">Barcode/Serial No.</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Unit Price</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Discount(%)</th>
+                    <th scope="col">Discount</th>
+                    <th scope="col">Total Amount (Including VAT)</th>
+                    <th width="50" scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td colspan="10" align="center">Please add some item to sale</td></tr>
+            </tbody>
+        </table>
         
-        <button type="submit"> 
-            Save
-        </button>
+        <br>
+
+        <h3 style="background-color: #6097ab;
+            color: white;
+            padding: 6px 15px;
+            font-weight: normal;
+            margin: 0;
+            width: max-content;
+            font-size: 16px;"> Cash Calculation </h3>
+
+        <table style="background: #eaf4ff; padding: 8px;">
+            <tr> 
+                <td> <label for=""> Total: </label> </td>
+                <td> <input type="number" name="total_ammount" value="" required /> </td>
+            </tr>
+            <tr>
+                <td> <label for=""> Trade Discount: </label> </td>
+                <td> <input type="number" name="discount" value=""  /> </td> 
+            </tr>
+            <tr>
+                <td>  <label for=""> Grand Total: </label>  </td>
+                <td> <input type="number" name="grand_total" value="" required  /> </td> 
+            </tr>
+            <tr>
+                <td>  <label for=""> Cash Received: </label> </td>
+                <td> <input type="number" name="cash_received" value="" required  /> </td> 
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td  > <button type="reset"> Cancel </button> </td>
+                <td  > <button type="submit"> Save </button> </td>
+            </tr>
+
+        </table>
+        
+        
     </g:form>
    
     

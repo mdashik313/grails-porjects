@@ -5,7 +5,7 @@
 <div class="pos-nav"> 
         <ul style=" width: 80%; margin: 20px auto; margin-top: 0;  padding-left: 0; padding-top: 7px; padding-bottom: 7px;">
             <li><a href="/pos/sales/home"> Home </a> </li>
-            <li><a href="/pos/sales/index"> Sales List</a> </li>
+            <li><a href="/pos/sales/list"> Sales List</a> </li>
             <li><a href="/pos/sales/index"> Plaza List</a></li> 
             <li><a href="/pos/employee/index"> Upload File </a> </li>
         </ul>
@@ -85,35 +85,35 @@
         border-radius: 5px;
     }
 
-    /* Table styling */
-    table {
+      .table-style {
       width: 100%;
       border-collapse: collapse;
       margin-top: 10px;
     }
 
-    thead tr {
-      background-color: #94c1e0; /* Header row color */
+    .table-style thead tr {
+      background-color: #6097ab; /* Header row color */
       color: #fff;              /* Header text color */
     }
 
-    th, td {
+    .table-style th, .table-style td {
       border: 1px solid #ccc;
       padding: 8px 12px;
       text-align: left;
     }
 
     /* Highlight first column */
-    td:first-child {
+    .table-style td:first-child {
+      /* You can add styling for the first column here if needed */
     }
 
     /* Alternate row color */
-    tbody tr:nth-child(even) {
-      background-color:rgb(230, 236, 237);
+    .table-style tbody tr:nth-child(even) {
+      background-color: rgb(230, 236, 237);
     }
 
     /* Hover effect */
-    tbody tr:hover {
+    .table-style tbody tr:hover {
       background-color: #FFFFED;
     }
     
