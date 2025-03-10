@@ -70,7 +70,7 @@
                 <td> <label for="mobile_no"> Mobile No: </label> </td>
                 <td> <input type="text" name="customer_mobile_no"  /> </td>
                 <td> <label> Employee ID:(if customer is walton employee) </label> </td>
-                <td> <input type="text" name="employee_id"  />  </td> 
+                <td> <input type="number" name="employee_id"  />  </td> 
             </tr>
 
             <tr> 
@@ -88,7 +88,7 @@
 
             <tr>
                 <td> <label for=""> Sale By: </label> </td>
-                <td> <input type="text" name="sale_by"  />  </td> 
+                <td> <input type="number" name="sale_by"  />  </td> 
                 <td> <label for=""> Purchaser Bin:	 </label> </td>
                 <td> <input type="text" name="purchase_bin"  />  </td> 
             </tr>
@@ -153,7 +153,7 @@
             </tr>
             <tr>
                 <td> <label for=""> Trade Discount: </label> </td>
-                <td> <input type="number" name="discount" value=""  /> </td> 
+                <td> <input type="number" name="discount" value="0"  /> </td> 
             </tr>
             <tr>
                 <td>  <label for=""> Grand Total: </label>  </td>

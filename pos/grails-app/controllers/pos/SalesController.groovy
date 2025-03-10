@@ -10,8 +10,9 @@ class SalesController {
         [sales:sales]
     }
 
-    def show() {
-
+    def show(Long id) {
+        def sale = Sales.get(id)
+        [sale: sale]
     }
 
     def home() {
@@ -23,30 +24,44 @@ class SalesController {
     }
 
     def save(){
+
+        Random randomNumber = new Random()
+        Date date_today = new Date()
+
+        def customer = new Customer(
+            mobileNo: params.customer_mobile_no,
+            name: params.customer_name,
+            nId: params.customer_nid,
+            address: params.customer_address,
+            employeeId: params?.employee_id
+        )
+
+        if(!customer.save(flush: true)){
+            flash.message = "Error saving customer!"
+            redirect(action: "new_retail_sale")
+            return
+        }
+
         def sale = new Sales()
         
-        sale.price_type = "WT Cash Price"
-        sale.sale_by = params.sale_by
-
-        Random sale_rand = new Random()
+        sale.priceType = "WT Cash Price"
+        sale.sellerId = params.sale_by
         // Generate a 3-digit random number (between 100 and 999)
-        sale.sale_no = 100 + sale_rand.nextInt(900)
-        sale.total_ammount = params.total_ammount?.toInteger()
-        sale.discount = params?.discount?.toInteger()
-        sale.grand_total = params.total_ammount?.toInteger() - params.discount?.toInteger()
-        sale.cash_received = params.cash_received?.toInteger()
-        sale.collection_amt = params.cash_received?.toInteger() - params.grand_total?.toInteger()
+        sale.saleNo = 100 + randomNumber.nextInt(900)
+        sale.totalAmmount = params.total_ammount?.toInteger()
+        sale.discount = params?.discount
+        sale.grandTotal = params.total_ammount?.toInteger() - params.discount?.toInteger()
+        sale.cashReceived = params.cash_received?.toInteger()
+        sale.collectionAmmount = params.cash_received?.toInteger() - params.grand_total?.toInteger()
+        sale.salesDate = date_today
 
-        Date date_today = new Date()
-        sale.sales_date = date_today
-        
+        sale.customer = customer
 
-        sale.customer_mobile_no = params.customer_mobile_no
-        sale.customer_name = params.customer_name
-        sale.customer_nid = params.customer_nid
-        sale.customer_address = params.customer_address
-
-        if(sale.save(flush:true)){ }
+        if(!sale.save(flush: true)){
+            flash.message = "Error saving sale!"
+            redirect(action: "new_retail_sale")
+            return
+        }
             
         redirect(action:"list")
     }

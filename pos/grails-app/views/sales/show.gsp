@@ -72,15 +72,15 @@
             </tr>
             <tr>
                 <td>Customer ID:</td>
-                <td> <input type="text" name="customersId" value="" disabled="disabled" /> </td>
-                <td> <input type="text" name="customerType" value="" disabled="disabled" /> </td>
+                <td> <input type="text" name="customersId" value="${sale.id}" disabled="disabled" /> </td>
+                <td> <input type="text" name="customerType" value="Retail" disabled="disabled" /> </td>
                 <td>Customer Code/AC:</td>
-                <td> <input type="text" name="customerCode"  value="" disabled="disabled" /> </td>
+                <td> <input type="text" name="customerCode"  value="202502006" disabled="disabled" /> </td>
                 <td> <input type="hidden" name="" /><input type="checkbox" name="exist" checked="checked" value="" disabled="disabled"  /> Exist? </td>
             </tr>
             <tr>
                 <td>Customer Name:</td>
-                <td><input type="text" name=""  value="" disabled="disabled" /></td>
+                <td><input type="text" name=""  value="${sale.customer.name}" disabled="disabled" /></td>
                 <td>Invoice Number:</td>
                 <td>
                     <input type="text" name=""  value=""  disabled="disabled" />

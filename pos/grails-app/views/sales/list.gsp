@@ -132,14 +132,14 @@
         <g:each var="sale" in="${sales}" >
         
           <tr>
-            <td>${sale.sale_no}</td>
-            <td>${sale.customer_name}</td>
+            <td>${sale.saleNo}</td>
+            <td>${sale.customer.name}</td>
             <td>Cash</td>
-            <td>${sale.price_type}</td>
-            <td>${sale.grand_total}</td>
-            <td>${sale.cash_received}</td>
-            <td>${sale.collection_amt}</td>
-            <td>${sale.sales_date}</td>
+            <td>${sale.priceType}</td>
+            <td>${sale.grandTotal}</td>
+            <td>${sale.cashReceived}</td>
+            <td>${sale.collectionAmmount}</td>
+            <td>${sale.salesDate}</td>
             <td>
               <g:link controller="sales" action="show" id="${sale.id}" style="border: none; background: transparent; cursor: pointer;">
                 <i class="fas fa-clipboard"></i>

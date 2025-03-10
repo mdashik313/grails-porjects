@@ -3,7 +3,7 @@ package pos
 class Sales {
     
     String priceType
-    String saleBy
+    String sellerId
 
     Integer saleNo
     Integer totalAmmount
@@ -13,7 +13,9 @@ class Sales {
     Integer collectionAmmount
     Date salesDate
 
+    static belongsTo = [customer: Customer]
+
     static constraints = {
-        // customer_mobile_no size: 11..11
+        discount nullable: true
     }
 }

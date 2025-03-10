@@ -4,10 +4,13 @@ class Customer {
     String mobileNo
     String name
     String nId
-    Integer employeeId
     String address
-    Integer customerId
+
+    Integer employeeId
+
+    static hasMany = [sales: Sales]
     
     static constraints = {
+        employeeId nullable: true
     }
 }
