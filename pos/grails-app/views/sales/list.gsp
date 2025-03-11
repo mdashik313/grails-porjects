@@ -139,7 +139,7 @@
             <td>${sale.grandTotal}</td>
             <td>${sale.cashReceived}</td>
             <td>${sale.collectionAmmount}</td>
-            <td>${sale.salesDate}</td>
+            <td> <g:formatDate format="MMMM d, yyyy" date="${sale.salesDate}" /> </td>
             <td>
               <g:link controller="sales" action="show" id="${sale.id}" style="border: none; background: transparent; cursor: pointer;">
                 <i class="fas fa-clipboard"></i>

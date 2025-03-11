@@ -82,30 +82,27 @@
                 <td>Customer Name:</td>
                 <td><input type="text" name=""  value="${sale.customer.name}" disabled="disabled" /></td>
                 <td>Invoice Number:</td>
-                <td>
-                    <input type="text" name=""  value=""  disabled="disabled" />
-                    
-                </td>
+                <td><input type="text" name=""  value="${sale.invoiceNumber}"  disabled="disabled" /></td>
             </tr>
             <tr>
                 <td>Customer Photo:</td>
-                <td>..</td>
+                <td>...</td>
                 <td>Invoice Time:</td>
-                <td><input type="text" name=""value="2025/3/3" disabled="disabled" /></td>
+                <td><input  type="text" name="" value="${g.formatDate(format: 'MMMM d, yyyy h:mm a', date: sale.salesDate)}" disabled="disabled" /></td>
             </tr>
             <tr>
                 <td>Emp ID[If Employee of Walton Group]:</td>
-                <td><input type="text" name=""  value="" disabled="disabled" />
+                <td><input type="text" name=""  value="${sale.customer.employeeId}" disabled="disabled" />
                 </td>
                 <td>National ID:</td>
-                <td><input type="text" name=""   value="" disabled="disabled" /></td>
+                <td><input type="text" name=""   value="${sale.customer.nId}" disabled="disabled" /></td>
 
             </tr>
             <tr>
                 <td>Present Address:</td>
-                <td><input type="text" name="" value="" disabled="disabled" /></td>
+                <td><input type="text" name="" value="${sale.customer.address}" disabled="disabled" /></td>
                 <td>Mobile No:</td>
-                <td><input type="text" name="" value="" disabled="disabled" /></td>
+                <td><input type="text" name="" value="${sale.customer.mobileNo}" disabled="disabled" /></td>
 
             </tr>
             
@@ -158,58 +155,58 @@
         <table style="background: #eaf4ff; padding: 8px;">
             <tr>
                 <td> <label>Total:</label> </td>
-                <td> <input type="text" value="" readonly> </td>
+                <td> <input type="text" value="${sale.totalAmmount}" disabled="disabled"> </td>
                 <td><label>Price Type:</label></td>
-                <td><input type="text" value="" readonly></td>
+                <td><input type="text" value="${sale.priceType}" disabled="disabled"></td>
             </tr>
             <tr>
                 <td><label>Gain on MRP:</label></td>
-                <td><input type="text" value="" readonly></td>
+                <td><input type="text" value="0" disabled="disabled"></td>
 
                 <td><label>Sales Type:</label></td>
-                <td><input type="text" value="" readonly></td>
+                <td><input type="text" value="Cash" disabled="disabled"></td>
             </tr>
             <tr>
                 <td><label>Rebate:</label></td>
-                    <td><input type="text" value="" readonly></td>
+                    <td><input type="text" value="0" disabled="disabled"></td>
                     <td><label>Cash Received (DP):</label></td>
-                    <td><input type="text" value="" readonly></td>
+                    <td><input type="text" value="${sale.cashReceived}" disabled="disabled"></td>
             </tr>
 
             <tr>
                 <td><label>Other [+/-]:</label></td>
-                <td><input type="text" value="" readonly></td>
+                <td><input type="text" value="0" disabled="disabled"></td>
                 <td><label>Current Balance:</label></td>
-                <td><input type="text" value="" readonly></td>
+                <td><input type="text" value="0" disabled="disabled"></td>
             </tr>
 
             <tr>
                 <td><label>VAT:</label></td>
-                <td><input type="text" value="" readonly></td>
+                <td><input type="text" value="0" disabled="disabled"></td>
                 <td><label>Credit Limit:</label></td>
-                <td><input type="text"></td>
+                <td><input type="text" value="0" disabled="disabled"></td>
             </tr>
            
             
             <tr>
                 <td><label>Grand Total:</label></td>
-                <td><input type="text" value="" readonly></td>
+                <td><input type="text" value="${sale.grandTotal}" disabled="disabled"></td>
                 <td><label>Processing Fee:</label></td>
-                <td><input type="text"></td>
+                <td><input type="text" value="0" disabled="disabled"></td>
             </tr>
             <tr>
                 <td><label>Collected Amount:</label></td>
-                <td><input type="text"></td>
+                <td><input type="text" value="${sale.collectionAmmount}" disabled="disabled"></td>
                 <td><label>Next Installment Date:</label></td>
-                <td><input type="text"></td>
+                <td><input type="text" disabled="disabled"></td>
                 
             </tr>
              <tr>
                 
                 <td><label>Total Collection:</label></td>
-                <td><input type="text" value="" readonly></td>
+                <td><input type="text" value="${sale.collectionAmmount}" disabled="disabled"></td>
                 <td><label>Remarks:</label></td>
-                <td><input type="text"></td>
+                <td><input type="text" disabled="disabled"></td>
             </tr>
                 
             <tr>

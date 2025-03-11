@@ -4,6 +4,7 @@ class Sales {
     
     String priceType
     String sellerId
+    String invoiceNumber
 
     Integer saleNo
     Integer totalAmmount
