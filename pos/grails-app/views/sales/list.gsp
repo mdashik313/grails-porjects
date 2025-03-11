@@ -77,11 +77,11 @@
     <g:render template="/layouts/sales_nav" />
 
     <div >
-      <form action="search_sale" method="get" >
+      <form action="search_sale" method="get">
           <table border="0"  >
               <tr>
                   <td >Sale No:</td>
-                  <td><input type="text" name="sale_no" value=""  id="code" /></td>
+                  <td><input type="number" name="sale_no"   id="code" /></td>
                   <td>Customer Name:</td>
                   <td><input type="text" name="customer_name" value="" /></td>
                   <td >Customer Mobile No:</td>

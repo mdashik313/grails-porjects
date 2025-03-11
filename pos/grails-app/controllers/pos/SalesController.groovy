@@ -82,7 +82,9 @@ class SalesController {
 
         def results = s.list {
             if(params.sale_no){
-                ilike("saleNo", "%${params.sale_no}%")  // Case-insensitive partial search
+                // def saleNoParam = params.sale_no.toString().trim()
+                def saleNoParamI = params.sale_no.toInteger()  // Convert to Integer
+                eq("saleNo", saleNoParamI)
             }
             
             if(params.customer_name){
@@ -104,10 +106,12 @@ class SalesController {
             if(params.toDate){
                 SimpleDateFormat date_format = new SimpleDateFormat("yyyy-MM-dd")
                 Date toDate = date_format.parse(params.toDate) // Convert form input to Date object
-                le("salesDate", toDate)
+                // Increment the 'toDate' by one day (adding 86400000 milliseconds = 1 day)
+                toDate = new Date(toDate.time + 86400000) 
+                lt("salesDate", toDate)
             }
-            println search_result
         }
+        println results
 
 
         // def searchResult = Sales.getAll()
